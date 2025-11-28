@@ -127,6 +127,7 @@ Créer un fichier `backend/.env` :
 PORT=5000
 MONGODB_URI=mongodb+srv://<user>:<password>@<cluster>.mongodb.net/bibliotheque
 JWT_SECRET=votre_cle_secrete_super_longue
+SALT_ROUNDS=10
 ```
 
 ### 4. Installer les dépendances frontend
