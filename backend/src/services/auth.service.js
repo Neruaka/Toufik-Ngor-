@@ -58,11 +58,17 @@ exports.SignIn = async ({ identifier, password }) => {
       };
     }
 
-    delete user.password;
+    // Convertir l'objet Mongoose en objet plain et retirer le password
+    const userObject = user.toObject();
+    delete userObject.password;
 
-    const accessToken = await generateToken({ ...user });
+    const token = generateToken({ 
+      userId: userObject._id,
+      email: userObject.email,
+      username: userObject.username
+    });
 
-    if (!accessToken) {
+    if (!token) {
       throw new Error("Erreur lors de la création d'un token utilisateur.");
     }
 
@@ -70,7 +76,10 @@ exports.SignIn = async ({ identifier, password }) => {
       error: false,
       message: "Connexion effectuée",
       statusCode: 200,
-      data: { accessToken }
+      data: { 
+        token,
+        user: userObject
+      }
     };
   } catch (error) {
     console.error("SERVICE::AUTH::SignIn - ", error);

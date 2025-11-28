@@ -21,7 +21,7 @@ const Navbar = () => {
         <nav style={styles.nav}>
             <div style={styles.left}>
                 <NavLink to="/" style={getNavLinkStyle}>
-                    📚 Ma Bibliothèque
+                     bookTracker
                 </NavLink>
             </div>
 
