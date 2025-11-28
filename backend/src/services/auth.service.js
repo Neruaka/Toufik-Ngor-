@@ -33,13 +33,11 @@ exports.SignIn = async ({ identifier, password }) => {
     const emailRegex = /[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}/gim;
 
     let user;
-
     if (emailRegex.test(identifier)) {
       user = await User.findOne({email : identifier});
     } else {
-      user = await User.findOne({username: {$regex : identifier.toLowerCase(), $options :"i"}});
+      user = await User.findOne({ username: { $regex: `^${identifier}$`, $options: "i" } });
     }
-
     if (!user) {
       return {
         error: true,
