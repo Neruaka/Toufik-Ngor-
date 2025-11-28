@@ -1,8 +1,8 @@
 import { create } from "zustand";
-import { registerUser, loginUser } from "../services/auth.api";
+import { registerUser, loginUser } from "../services/api";
 
 const useAuthStore = create((set) => ({
-  user: null,
+  user: JSON.parse(localStorage.getItem("user")) || null,
   token: localStorage.getItem("token") || null,
   isAuthenticated: !!localStorage.getItem("token"),
   loading: false,
@@ -28,6 +28,7 @@ const useAuthStore = create((set) => ({
       const { token, user } = response.data;
 
       localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
       set({ user, token, isAuthenticated: true, loading: false });
 
       return { success: true };
@@ -40,6 +41,7 @@ const useAuthStore = create((set) => ({
 
   logout: () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     set({ user: null, token: null, isAuthenticated: false });
   },
 
