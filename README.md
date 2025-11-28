@@ -229,8 +229,8 @@ L'application démarre sur `http://localhost:5173`
 
 | Membre | Rôle |
 |--------|------|
-| [Nom Personne A] | Authentification (backend + frontend) |
-| [Nom Personne B] | Gestion des items (backend + frontend) |
+| [Florent Ngor] | Authentification (backend + frontend) |
+| [Frederick Toufik] | Gestion des items (backend + frontend) |
 
 ## Scripts disponibles
 
