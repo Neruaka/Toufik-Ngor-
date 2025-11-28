@@ -162,14 +162,14 @@ L'application démarre sur `http://localhost:5173`
 
 ### Authentification
 
-| Méthode | Endpoint | Description | Auth |
+| Méthode | Endpoint | Description | Auth needed ? |
 |---------|----------|-------------|------|
 | POST | `/auth/signup` | Inscription | ❌ |
 | POST | `/auth/signin` | Connexion | ❌ |
 
 ### Items (Livres)
 
-| Méthode | Endpoint | Description | Auth |
+| Méthode | Endpoint | Description | Auth needed ? |
 |---------|----------|-------------|------|
 | GET | `/items` | Récupérer tous ses livres | ✅ |
 | GET | `/items?status=reading` | Filtrer par statut | ✅ |
