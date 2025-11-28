@@ -26,7 +26,7 @@ const useAuthStore = create((set) => ({
     try {
       const response = await loginUser({ identifier: email, password });
       const { token, user } = response.data;
-
+      console.log(token)
       localStorage.setItem("token", token);
       set({ user, token, isAuthenticated: true, loading: false });
 
