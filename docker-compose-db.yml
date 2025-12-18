@@ -1,0 +1,63 @@
+services:
+  mongodb-primary:
+    build:
+      context: .
+      dockerfile: mongodb/Dockerfile
+    container_name: mongodb-primary
+    hostname: mongodb-primary
+    command: ["mongod", "--replSet", "rs0", "--bind_ip_all", "--keyFile", "/etc/mongo/mongo-keyfile"]
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER:-admin}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD:-admin_password}
+    volumes:
+      - mongodb_primary_data:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - db-network
+    restart: unless-stopped
+
+  mongodb-replica:
+    build:
+      context: .
+      dockerfile: mongodb/Dockerfile
+    container_name: mongodb-replica
+    hostname: mongodb-replica
+    command: ["mongod", "--replSet", "rs0", "--bind_ip_all", "--keyFile", "/etc/mongo/mongo-keyfile"]
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER:-admin}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD:-admin_password}
+    volumes:
+      - mongodb_replica_data:/data/db
+    ports:
+      - "27018:27017"
+    networks:
+      - db-network
+    depends_on:
+      - mongodb-primary
+    restart: unless-stopped
+
+  mongo-init:
+    image: mongo:7.0
+    container_name: mongo-init
+    depends_on:
+      - mongodb-primary
+      - mongodb-replica
+    networks:
+      - db-network
+    volumes:
+      - ./init-replica.sh:/init-replica.sh:ro
+    entrypoint: ["bash", "/init-replica.sh"]
+    environment:
+      MONGO_ROOT_USER: ${MONGO_ROOT_USER:-admin}
+      MONGO_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD:-admin_password}
+    restart: "no"
+
+volumes:
+  mongodb_primary_data:
+  mongodb_replica_data:
+
+networks:
+  db-network:
+    name: db-network
+    driver: bridge

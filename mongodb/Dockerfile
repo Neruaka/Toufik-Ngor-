@@ -1,8 +1,4 @@
 FROM mongo:7.0
 
-
-ENV MONGO_INITDB_ROOT_USERNAME=admin
-ENV MONGO_INITDB_ROOT_PASSWORD=admin_password
-ENV MONGO_INITDB_DATABASE=bibliotheque
-
-EXPOSE 27017
+COPY mongo-keyfile /etc/mongo/mongo-keyfile
+RUN chmod 400 /etc/mongo/mongo-keyfile && chown mongodb:mongodb /etc/mongo/mongo-keyfile
